@@ -1,15 +1,19 @@
 // route pour les films
-const apiRoutes = require("./movies")
+const moviesRoutes = require("./movies")
+const crewRoutes = require("./crews")
+const directorsRoutes = require("./directors")
 
 
-const appRouter = (app, fs) => {
+const appRouter = (app) => {
 
     app.get('/', (req, res) => {
         res.send('Welcome to the NetFlax api-server!');
     });
 
     // run our route module here to complete the wire up
-    apiRoutes(app, fs);
+    moviesRoutes(app);
+    crewRoutes(app);
+    directorsRoutes(app);
 };
 
 // this line is unchanged
