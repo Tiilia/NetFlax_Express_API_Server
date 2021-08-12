@@ -12,17 +12,24 @@ const moviesRoutes = (app) => {
         request.query(
             "SELECT * FROM movie",
             function (error, result, fields) {
-                result = result.recordset;
-                result = {
-                    response: "success",
-                    results: result
-                };
+                if (result.length === 0) {
+                    result = {
+                        response: 'error',
+                        error: 'invalid id'
+                    }
+                } else {
+                    result = result.recordset;
+                }
+                // result = {
+                //     response: "success",
+                //     results: result
+                // };
                 res.send(result);
             });
     });
 
-    // par film ---------------
-    app.get("/movies/:id", function (req, res) {
+    // film par id  ---------------
+    app.get("/movies/id/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
             `SELECT * 
@@ -35,17 +42,35 @@ const moviesRoutes = (app) => {
                         error: 'invalid id'
                     }
                 } else {
-                    result = result.recordset[0];
-                    result = {
-                        response: "success",
-                        results: result
-                    };
+                    result = result.recordset;
                 }
                 res.send(result);
             });
     });
 
-    // // équipe de tournage
+    // films par id de genre
+    app.get("/movies/genre/:id", function (req, res) {
+        let request = new sql.Request(dbConnect);
+        request.query(
+            `SELECT m.*
+            FROM movie as m
+            JOIN MovieGenre as mg ON
+            mg.IdMovie = m.IdMovie
+            WHERE mg.IdGenre = ${req.params.id}`,
+            function (error, result, fields) {
+                if (result.length === 0) {
+                    result = {
+                        response: 'error',
+                        error: 'invalid id'
+                    }
+                } else {
+                    result = result.recordset;
+                }
+                res.send(result);
+            });
+    });
+
+    // équipe de tournage
     // app.get("/movies/:id/crew", function (req, res) {
     //     let request = new sql.Request(dbConnect);
     //     request.query(

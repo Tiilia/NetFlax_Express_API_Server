@@ -4,33 +4,29 @@ var dbConnect = require("../dbConnect");
 const sql = require('mssql/msnodesqlv8');
 
 
-const crewRoutes = (app) => {
+const genresRoutes = (app) => {
 
-    //tous les membres d'équipe
-    app.get("/crews", function (req, res) {
+    //tous les genres
+    app.get("/genres", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
-            "SELECT * FROM crew",
+            "SELECT genre.* FROM Genre",
             function (error, result, fields) {
                 result = result.recordset;
-                result = {
-                    response: "success",
-                    results: result
-                };
                 res.send(result);
             });
     })
 
 
-    // equipe par id de film
-    app.get("/crews/:id", function (req, res) {
+    // genre par id de film
+    app.get("/genres/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
-            `SELECT Crew.*
-            FROM crew 
-            JOIN CrewMovie ON 
-            crew.IdCrew = CrewMovie.IdCrew
-            WHERE CrewMovie.IdMovie = ${req.params.id}`,
+            `SELECT g.*
+            From Genre as g
+            JOIN MovieGenre as mg ON
+            mg.IdGenre = g.IdGenre
+            WHERE IdMovie = ${req.params.id}`,
             function (error, result, fields) {
                 if (result.length === 0) {
                     result = {
@@ -49,4 +45,4 @@ const crewRoutes = (app) => {
     });
 
 };
-module.exports = crewRoutes;
+module.exports = genresRoutes;

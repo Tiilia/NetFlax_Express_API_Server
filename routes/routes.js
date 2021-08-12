@@ -3,6 +3,7 @@ const moviesRoutes = require("./movies")
 const crewRoutes = require("./crews")
 const directorsRoutes = require("./directors")
 const castRoutes = require("./cast");
+const genresRoutes = require("./genres")
 
 
 const appRouter = (app) => {
@@ -15,7 +16,8 @@ const appRouter = (app) => {
     moviesRoutes(app);
     crewRoutes(app);
     directorsRoutes(app);
-    castRoutes(app)
+    castRoutes(app);
+    genresRoutes(app);
 };
 
 // this line is unchanged

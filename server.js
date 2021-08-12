@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(cors());
 
 // création des routes
 const routes = require('./routes/routes.js')(app);
