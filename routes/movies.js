@@ -70,6 +70,28 @@ const moviesRoutes = (app) => {
             });
     });
 
+    // film par id acteur
+    app.get("/movies/cast/:id", function (req, res) {
+        let request = new sql.Request(dbConnect);
+        request.query(
+            `SELECT m.*
+            FROM movie as m
+            JOIN MovieCast as mc ON
+            mc.IdMovie = m.IdMovie
+            WHERE mc.IdCast = ${req.params.id}`,
+            function (error, result, fields) {
+                if (result.length === 0) {
+                    result = {
+                        response: 'error',
+                        error: 'invalid id'
+                    }
+                } else {
+                    result = result.recordset;
+                }
+                res.send(result);
+            });
+    });
+
     // équipe de tournage
     // app.get("/movies/:id/crew", function (req, res) {
     //     let request = new sql.Request(dbConnect);

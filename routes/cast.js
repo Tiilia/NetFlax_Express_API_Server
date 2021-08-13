@@ -10,20 +10,16 @@ const castRoutes = (app) => {
     app.get("/cast", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
-            "SELECT * FROM directors",
+            "SELECT * FROM cast",
             function (error, result, fields) {
                 result = result.recordset;
-                result = {
-                    response: "success",
-                    results: result
-                };
                 res.send(result);
             });
     })
 
 
-    // directeurs d'équipe par id de film
-    app.get("/cast/:id", function (req, res) {
+    // acteur par id
+    app.get("/cast/id/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
             `SELECT *
@@ -37,10 +33,27 @@ const castRoutes = (app) => {
                     }
                 } else {
                     result = result.recordset;
+                }
+                res.send(result);
+            });
+    });
+    // acteurs par id de film
+    app.get("/cast/movie/:id", function (req, res) {
+        let request = new sql.Request(dbConnect);
+        request.query(
+            `SELECT c.*
+            FROM cast as c
+            JOIN MovieCast as mc ON
+            mc.IdCast =c.IdCast
+            WHERE mc.idMovie = ${req.params.id}`,
+            function (error, result, fields) {
+                if (result.length === 0) {
                     result = {
-                        response: "success",
-                        results: result
-                    };
+                        response: 'error',
+                        error: 'invalid id'
+                    }
+                } else {
+                    result = result.recordset;
                 }
                 res.send(result);
             });
