@@ -23,7 +23,7 @@ const crewRoutes = (app) => {
 
 
     // equipe par id de film
-    app.get("/crews/:id", function (req, res) {
+    app.get("/crews/movie/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
             `SELECT Crew.*
@@ -39,10 +39,6 @@ const crewRoutes = (app) => {
                     }
                 } else {
                     result = result.recordset;
-                    result = {
-                        response: "success",
-                        results: result
-                    };
                 }
                 res.send(result);
             });

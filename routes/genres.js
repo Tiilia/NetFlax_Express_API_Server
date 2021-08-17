@@ -19,7 +19,7 @@ const genresRoutes = (app) => {
 
 
     // genre par id de film
-    app.get("/genres/:id", function (req, res) {
+    app.get("/genres/movie/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
             `SELECT g.*
@@ -35,10 +35,6 @@ const genresRoutes = (app) => {
                     }
                 } else {
                     result = result.recordset;
-                    result = {
-                        response: "success",
-                        results: result
-                    };
                 }
                 res.send(result);
             });

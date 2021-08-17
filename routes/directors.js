@@ -23,13 +23,13 @@ const directorsRoutes = (app) => {
 
 
     // directeurs d'équipe par id de film
-    app.get("/directors/:id", function (req, res) {
+    app.get("/directors/movie/:id", function (req, res) {
         let request = new sql.Request(dbConnect);
         request.query(
-            `SELECT *
-            FROM Directors
+            `SELECT d.*
+            FROM Directors as d
             JOIN Crew ON
-            Crew.IdCrew = Directors.IdCrew
+            Crew.IdCrew = d.IdCrew
             JOIN CrewMovie ON
             Crew.IdCrew = CrewMovie.IdCrew
             WHERE CrewMovie.IdMovie = ${req.params.id}`,
@@ -41,10 +41,6 @@ const directorsRoutes = (app) => {
                     }
                 } else {
                     result = result.recordset;
-                    result = {
-                        response: "success",
-                        results: result
-                    };
                 }
                 res.send(result);
             });

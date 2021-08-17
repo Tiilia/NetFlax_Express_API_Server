@@ -42,7 +42,7 @@ const moviesRoutes = (app) => {
                         error: 'invalid id'
                     }
                 } else {
-                    result = result.recordset;
+                    result = result.recordset[0];
                 }
                 res.send(result);
             });
